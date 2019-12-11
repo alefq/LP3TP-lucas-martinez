@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: tp2017
+Implementation-Version: 0.1.0
+Built-By: marti
+Implementation-Vendor-Id: py.edu.uca.lp3
+Build-Jdk: 1.8.0_231
+Implementation-URL: http://projects.spring.io/spring-boot/tp2017/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+
