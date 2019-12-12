@@ -10,6 +10,13 @@ public class Jugador extends Empleado {
 	 */
 	private static final long serialVersionUID = -5247209648697065642L;
 
+	private String posicion; //no te olvides de hacer set cargo = jugador
+	
+	private String piernaHabil = "Derecha";
+	private int potencia;
+	private int resistencia;
+	private int habilidad;
+	private int velocidad;
 	
 	public Jugador() {
 		// TODO Auto-generated constructor stub
@@ -30,8 +37,7 @@ public class Jugador extends Empleado {
 		// TODO Auto-generated constructor stub
 	}
 	
-	private String posicion; //no te olvides de hacer set cargo = jugador
-
+	
 
 	public String getPosicion() {
 		return posicion;
@@ -40,6 +46,47 @@ public class Jugador extends Empleado {
 	public void setPosicion(String posicion) {
 		this.posicion = posicion;
 	}
+
+	public String getPiernaHabil() {
+		return piernaHabil;
+	}
+
+	public void setPiernaHabil(String piernaHabil) {
+		this.piernaHabil = piernaHabil;
+	}
+
+	public int getPotencia() {
+		return potencia;
+	}
+
+	public void setPotencia(int potencia) {
+		this.potencia = potencia;
+	}
+
+	public int getResistencia() {
+		return resistencia;
+	}
+
+	public void setResistencia(int resistencia) {
+		this.resistencia = resistencia;
+	}
+
+	public int getHabilidad() {
+		return habilidad;
+	}
+
+	public void setHabilidad(int habilidad) {
+		this.habilidad = habilidad;
+	}
+
+	public int getVelocidad() {
+		return velocidad;
+	}
+
+	public void setVelocidad(int velocidad) {
+		this.velocidad = velocidad;
+	}
+	
 	
 	
 }

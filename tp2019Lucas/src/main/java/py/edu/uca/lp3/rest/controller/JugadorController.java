@@ -103,7 +103,7 @@ public class JugadorController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los jugadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
+			System.out.println("Ocurrió un error al editar los jugadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
     
@@ -119,7 +119,7 @@ public class JugadorController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los jugadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
+			System.out.println("Ocurrió un error al editar los jugadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
     
@@ -135,7 +135,7 @@ public class JugadorController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los jugadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
+			System.out.println("Ocurrió un error al editar los jugadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
     
@@ -151,7 +151,18 @@ public class JugadorController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los jugadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
+			System.out.println("Ocurrió un error al editar los jugadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
+		}
+    }
+    
+    @RequestMapping(value = "/editar-atributos", method = RequestMethod.PUT)
+    public void atributos(@RequestBody List<Jugador> jugadores) {
+    	try {
+			jugadorService.editarAtributos(jugadores);
+		} catch (InscripcionException e) {
+			// TODO Auto-generated catch block
+			String email = e.getContacto();
+			System.out.println("Ocurrió un error al editar los jugadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
     

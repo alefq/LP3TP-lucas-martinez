@@ -27,7 +27,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import py.edu.uca.lp3.repository.PersonRepository;
+import py.edu.uca.lp3.repository.PersonaRepository;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -43,7 +43,7 @@ public class ApplicationTests {
 	private MockMvc mockMvc;
 
 	@Autowired
-	private PersonRepository personRepository;
+	private PersonaRepository personRepository;
 
 	@Before
 	public void deleteAllBeforeTests() throws Exception {

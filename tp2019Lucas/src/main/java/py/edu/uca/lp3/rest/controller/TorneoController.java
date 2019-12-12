@@ -41,7 +41,7 @@ public class TorneoController {
 			torneoService.saveList(torneos);
 		} catch (InscripcionException e) {
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los entrenadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
+			System.out.println("Ocurrió un error al inscribir los torneos: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
     
@@ -51,7 +51,7 @@ public class TorneoController {
 			torneoService.editList(torneos);
 		} catch (InscripcionException e) {
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los entrenadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
+			System.out.println("Ocurrió un error al inscribir los torneos: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
 

@@ -36,7 +36,7 @@ public class EquipoController {
 			equipoService.saveList(equipo);
 		} catch (InscripcionException e) {
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los entrenadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
+			System.out.println("Ocurrió un error al inscribir los equipos: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
 
@@ -47,7 +47,28 @@ public class EquipoController {
 			equipoService.editList(equipo);
 		} catch (InscripcionException e) {
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los entrenadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
+			System.out.println("Ocurrió un error al inscribir los equipos: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
+		}
+    }
+    
+    @RequestMapping(value ="/impuesto-lujo", method = RequestMethod.PUT)
+    public void pagoImpuestoLujo(@RequestBody List<Equipo> equipo) {
+    	try {
+			equipoService.pagoImpuestoLujoList(equipo);
+		} catch (InscripcionException e) {
+			String email = e.getContacto();
+			System.out.println("Ocurrió un error al inscribir los equipos: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
+		}
+    }
+    
+    
+    @RequestMapping(value = "/clasifica-internacional", method = RequestMethod.PUT)
+    public void clacificaInternacional(@RequestBody List<Equipo> equipo) {
+    	try {
+			equipoService.clasificaInternacionalList(equipo);
+		} catch (InscripcionException e) {
+			String email = e.getContacto();
+			System.out.println("Ocurrió un error al inscribir los equipos: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
     

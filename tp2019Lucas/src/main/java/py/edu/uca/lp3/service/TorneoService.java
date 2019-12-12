@@ -21,11 +21,25 @@ public class TorneoService {
 	@Autowired
 	private TorneoRepository torneoRepository;
 	
+	/*
+     * Funcion para obtener un torneo en especifico
+     * Parametros:
+     * 				Long id : id del torneo que queremos
+     * Retorno:
+     * 				Torneo torneo : el torneo con id = id
+     * */
 	public Torneo findById(Long id) {
 		Torneo torneo = torneoRepository.findOne(id);
 		return torneo;
 	}
 
+	/*
+     * Funcion para obtener una lista de todos los torneos
+     * Parametros:
+     * 				ninguno
+     * Retorno:
+     * 				List<Torneo> torneos : la lista de todos los torneos
+     * */
 	public List<Torneo> findAll() {
 		List<Torneo> torneos = new ArrayList<>();
 		Iterator<Torneo> iteratorTorneos = torneoRepository.findAll().iterator();
@@ -35,14 +49,35 @@ public class TorneoService {
 		return torneos;
 	}
 
+	/*
+     * Funcion para guardar un torneo con persistencia
+     * Parametros:
+     * 				Torneo torneo : el torneo que guardaremos con persistencia
+     * Retorno:
+     * 				ninguno
+     * */
 	public void save(Torneo torneo) {
 		torneoRepository.save(torneo);
 	}
 
+	/*
+     * Funcion para eliminar un torneo con un id especifico de la persistencia
+     * Parametros:
+     * 				Long id : el ide del torneo que queremos eliminar
+     * Retorno:
+     * 				ninguno
+     * */
 	public void delete(Long id) {
 		torneoRepository.delete(id);
 	}
 
+	/*
+     * Funcion para guardar una lista de torneos con persistencia
+     * Parametros:
+     * 				List<Torneo> torneos : la lista de lostorneos que guardaremos con persistencia
+     * Retorno:
+     * 				ninguno
+     * */
 	public void saveList(List<Torneo> torneos) throws InscripcionException {
 		for (Torneo aGuardar : torneos) {
 			if (isNombreDisponible(aGuardar.getNombreDelTorneo())) {
@@ -53,8 +88,8 @@ public class TorneoService {
 						inscripcionException.setContacto(Contacto.TORNEO);
 						throw inscripcionException;
 					}
-					if(aGuardar.getTipo() == "Internacional" && !objEquipo(participante).isCalificaParaInternacional()) {
-						InscripcionException inscripcionException = new InscripcionException(//System.out.println(
+					if(aGuardar.getTipo().equals("Internacional") && !objEquipo(participante).isCalificaParaInternacional()) {
+						InscripcionException inscripcionException = new InscripcionException(
 								"El equipo: "+ participante +" no ha calificado para el torneo internacional: "+aGuardar.getNombreDelTorneo());
 						inscripcionException.setContacto(Contacto.TORNEOINTERNACIONAL);
 						throw inscripcionException;
@@ -71,6 +106,13 @@ public class TorneoService {
 		}
 	}
 	
+	/*
+     * Funcion para editar una lista de torneos con persistencia
+     * Parametros:
+     * 				List<Torneo> torneos : la lista de lo storneos que queremos editar con persistencia
+     * Retorno:
+     * 				ninguno
+     * */
 	public void editList(List<Torneo> torneos) throws InscripcionException {
 		for (Torneo aGuardar : torneos) {
 			if (!isNombreDisponible(aGuardar.getNombreDelTorneo())) {
@@ -81,8 +123,8 @@ public class TorneoService {
 						inscripcionException.setContacto(Contacto.TORNEO);
 						throw inscripcionException;
 					}
-					if(aGuardar.getTipo() == "Internacional" && !objEquipo(participante).isCalificaParaInternacional()) {
-						InscripcionException inscripcionException = new InscripcionException(//System.out.println(
+					if(aGuardar.getTipo().equals("Internacional") && !objEquipo(participante).isCalificaParaInternacional()) {
+						InscripcionException inscripcionException = new InscripcionException(
 								"El equipo: "+ participante +" no ha calificado para el torneo internacional: "+aGuardar.getNombreDelTorneo());
 						inscripcionException.setContacto(Contacto.TORNEOINTERNACIONAL);
 						throw inscripcionException;
@@ -101,6 +143,14 @@ public class TorneoService {
 		}
 	}
 	
+	/*
+     * Funcion para obtener un torneo por su nombre
+     * Parametros:
+     * 				String nombre : el nombre del torneo que queremos
+     * Retorno:
+     * 				Torneo actual : el torneo que coincide con el numero de cedula
+     * 				null : si no se encontro ningun torneo con dicho numero de cedula
+     * */
 	public Torneo findByName(String nombre) {
 		Iterator<Torneo> iteratorTorneos = torneoRepository.findAll().iterator();
 		while(iteratorTorneos.hasNext()) {
@@ -112,6 +162,13 @@ public class TorneoService {
 		return null;
 	}
 
+	/*
+     * Funcion para verificar si un nombre de torneo especifico se encuentra disponible
+     * Parametros:
+     * 				String nombreDelTorneo : el nombre del torneo que queremos verificar
+     * Retorno:
+     * 				boolean : true si el numero de cedula se encuentra disponible, false si no
+     * */
 	private boolean isNombreDisponible(String nombreDelTorneo) {
 		if(findByName(nombreDelTorneo) == null) {
 			return true;
@@ -122,6 +179,7 @@ public class TorneoService {
 	
 	@Resource
 	private EquipoRepository equipoRepository;
+	
 	public Equipo objEquipo(String club) {
 		Iterator<Equipo> iteratorEquipo = equipoRepository.findAll().iterator();
 		while(iteratorEquipo.hasNext()) {
@@ -133,6 +191,7 @@ public class TorneoService {
 		}
 		return null;
 	}
+	
 	
 	public String findPromedioSalarioEquipos(String nombreTorneo) {
 		long sumaSalarios = 0;

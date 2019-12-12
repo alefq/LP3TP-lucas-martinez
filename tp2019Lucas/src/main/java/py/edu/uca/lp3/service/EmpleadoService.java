@@ -28,7 +28,7 @@ public class EmpleadoService {
 	/*
      * Funcion para obtener un empleado en especifico
      * Parametros:
-     * 				Long id : id del empleado que qeremos
+     * 				Long id : id del empleado que queremos
      * Retorno:
      * 				Empleado empleado : el empleado con id = id
      * */

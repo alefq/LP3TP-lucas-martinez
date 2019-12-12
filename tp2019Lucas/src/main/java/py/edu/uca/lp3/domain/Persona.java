@@ -18,7 +18,7 @@ public class Persona implements Serializable {
 	private static final long serialVersionUID = -4419931048984717671L;
 	
 	private String nombre;
-
+	private String sexo;
 	private String apellido;
 	
 	private int edad;
@@ -86,6 +86,14 @@ public class Persona implements Serializable {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
 	}
 
 

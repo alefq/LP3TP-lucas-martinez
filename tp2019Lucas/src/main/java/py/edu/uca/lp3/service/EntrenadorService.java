@@ -6,17 +6,13 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import py.edu.uca.lp3.constants.ApiPaths;
 import py.edu.uca.lp3.constants.Contacto;
 import py.edu.uca.lp3.domain.Empleado;
-import py.edu.uca.lp3.domain.Empresa;
 import py.edu.uca.lp3.domain.Entrenador;
 import py.edu.uca.lp3.domain.Equipo;
-import py.edu.uca.lp3.domain.Entrenador;
 import py.edu.uca.lp3.repository.EntrenadorRepository;
 import py.edu.uca.lp3.repository.EquipoRepository;
 import py.edu.uca.lp3exceptions.InscripcionException;

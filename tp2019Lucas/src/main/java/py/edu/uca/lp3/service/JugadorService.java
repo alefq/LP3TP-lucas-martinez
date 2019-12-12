@@ -351,6 +351,36 @@ public class JugadorService {
 	}
 	
 	/*
+     * Funcion para actualizar los atributos del jugador
+     * Parametros:
+     * 				int cedula : el numero de cedula del jugador que queremos modificar
+     * Retorno:
+     * 				ninguno
+     * */
+	public void editarAtributos(List<Jugador> jugadores) throws InscripcionException {
+		for(Jugador jugadorEdit:jugadores) {
+			int cedula = jugadorEdit.getNumeroCedula();
+			Jugador jugadorExistente = findByCedula(cedula);
+			if(jugadorExistente != null) {
+				jugadorExistente.setHabilidad(jugadorEdit.getHabilidad());
+				jugadorExistente.setPiernaHabil(jugadorEdit.getPiernaHabil());
+				jugadorExistente.setPotencia(jugadorEdit.getPotencia());
+				jugadorExistente.setVelocidad(jugadorEdit.getVelocidad());
+				jugadorExistente.setResistencia(jugadorEdit.getResistencia());
+				save(jugadorExistente);
+			}else {
+				InscripcionException inscripcionException = new InscripcionException(//System.out.println(
+						"No existe el jugador con numero de cedula: "+cedula);
+				inscripcionException.setContacto(Contacto.INSCRIPCION);
+				throw inscripcionException;
+			}
+		}
+		
+		
+	}
+	
+	
+	/*
      * Funcion para actualizar el salario de un equipo especifico, y el promedio y tope de salario para todos los equipos
      * Parametros:
      * 				Equipo equipo : el equipo que esta modificando su salario

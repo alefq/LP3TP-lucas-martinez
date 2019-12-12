@@ -9,6 +9,9 @@ public class Entrenador extends Empleado {
 	 * 
 	 */
 	private static final long serialVersionUID = -5352711405615465689L;
+		
+	private int titulosGanados; //como jugador
+	private boolean exJugador;
 	
 	public Entrenador() {
 		// TODO Auto-generated constructor stub
@@ -30,9 +33,7 @@ public class Entrenador extends Empleado {
 	}
 	
 	
-	
-	private int titulosGanados; //como jugador
-	private boolean exJugador;
+
 
 	public int getTitulosGanados() {
 		return titulosGanados;
@@ -49,6 +50,7 @@ public class Entrenador extends Empleado {
 	public void setExJugador(boolean exJugador) {
 		this.exJugador = exJugador;
 	}
+	
 	
 	
 

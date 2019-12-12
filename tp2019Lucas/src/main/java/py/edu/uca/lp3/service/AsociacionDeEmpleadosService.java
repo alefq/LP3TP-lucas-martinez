@@ -22,6 +22,13 @@ public class AsociacionDeEmpleadosService {
 	@Autowired
 	private AsociacionDeEmpleadosRepository miembroRepository;
 	
+	/*
+     * Funcion para obtener una asociacion de empleados en especifico
+     * Parametros:
+     * 				Long id : id de la asociacion que queremos
+     * Retorno:
+     * 				AsociacionDeEmpleados miembro : el el miembro de la asociacion con id = id
+     * */
 	public AsociacionDeEmpleados findById(Long id) {
 		AsociacionDeEmpleados miembro = miembroRepository.findOne(id);
 		return miembro;
