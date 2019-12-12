@@ -19,7 +19,7 @@ localhost:8080/api/lp3/equipos/
 
 Para ver un equipo en especifico, realizar un request de tipo GET a:
 
-localhost:8080/api/lp3/equipos/{nombreDelEquipo}
+localhost:8080/api/lp3/equipos/ver/{nombreDelEquipo}
 
 
 ## Empleados

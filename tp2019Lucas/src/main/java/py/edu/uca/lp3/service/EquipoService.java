@@ -235,6 +235,7 @@ public class EquipoService {
 				throw inscripcionException;
 			}
 			equipoExistente.setElEquipoPagoImpuestoDeLujo(equipoEdit.isElEquipoPagoImpuestoDeLujo());
+			save(equipoExistente);
 		}
 	}
 	
@@ -255,7 +256,8 @@ public class EquipoService {
 				inscripcionException.setContacto(Contacto.INSCRIPCION);
 				throw inscripcionException;
 			}
-			equipoExistente.setElEquipoPagoImpuestoDeLujo(equipoEdit.isElEquipoPagoImpuestoDeLujo());
+			equipoExistente.setCalificaParaInternacional(equipoEdit.isCalificaParaInternacional());
+			save(equipoExistente);
 		}
 	}
 	

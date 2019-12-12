@@ -74,7 +74,7 @@ public class EquipoController {
     
     
     @SuppressWarnings("unchecked")
-	@RequestMapping(value = "/{nombreClub}", method = RequestMethod.GET)
+	@RequestMapping(value = "/ver/{nombreClub}", method = RequestMethod.GET)
     public List<Equipo> verEquipoObj(@PathVariable("nombreClub") String nombreClub) {
     	return (List<Equipo>) equipoService.objEquipo(nombreClub);
     }
