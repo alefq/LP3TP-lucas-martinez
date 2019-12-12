@@ -93,8 +93,9 @@ public class EmpleadoService {
 		}*/
 		Iterator<Empleado> iteratorEmpleados = empleadoRepository.findAll().iterator();
 		while(iteratorEmpleados.hasNext()) {
-			if (club != null && club.equals(iteratorEmpleados.next().getClub())) {
-				listaEmpleados.add(iteratorEmpleados.next());
+			Empleado actual = iteratorEmpleados.next();
+			if (club != null && club.equals(actual.getClub())) {
+				listaEmpleados.add(actual);
 			}
 
 		}

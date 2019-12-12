@@ -46,6 +46,25 @@ public class AsociacionDeEmpleadosService {
 		miembroRepository.delete(id);
 	}
 	
+	/*
+     * Funcion para eliminar un jugador de la persistencia utilizando su numero de cedula
+     * Parametros:
+     * 				int cedula : el numero de cedula del jugador que queremos eliminar
+     * Retorno:
+     * 				ninguno
+     * */
+	public void deleteByCedula(int cedula) throws InscripcionException {
+		AsociacionDeEmpleados miembro = findByCedulaEnAsociacion(cedula);
+		if(miembro == null) {
+			InscripcionException inscripcionException = new InscripcionException(//System.out.println(
+					"No existe un miembro en la asociacion con numero de cedula: "+cedula);
+			inscripcionException.setContacto(Contacto.INSCRIPCION);
+			throw inscripcionException;
+		}
+		long id = miembro.getId();
+		miembroRepository.delete(id);
+	}
+	
 	
 	/*
      * Funcion para guardar una lista de empleados con persistencia
@@ -64,6 +83,13 @@ public class AsociacionDeEmpleadosService {
 			}else if(numeroDeCedulaDisponible(aGuardar)) {
 				InscripcionException inscripcionException = new InscripcionException(//System.out.println(
 						"No existe una persona con el numero de cedula: " + aGuardar);
+				inscripcionException.setContacto(Contacto.INSCRIPCION);
+				throw inscripcionException;
+			}
+			
+			if(!numeroDeCedulaDisponibleEnAsociacion(aGuardar)) {
+				InscripcionException inscripcionException = new InscripcionException(
+						"Ya existe una persona en la asociacion de empleados con el numero de cedula: " + aGuardar);
 				inscripcionException.setContacto(Contacto.INSCRIPCION);
 				throw inscripcionException;
 			}
@@ -109,6 +135,40 @@ public class AsociacionDeEmpleadosService {
 		while(iteratorEmpleados.hasNext()) {
 			Empleado actual = iteratorEmpleados.next();
 			if (cedula== actual.getNumeroCedula()) {
+				return actual;
+			}
+		}
+		return null;
+	}
+	
+	/*
+     * Funcion para verificar si un numero de cedula especifico se encuentra disponible en la Asociacion (si no hay nadie ya utilizando ese numero de cedula)
+     * Parametros:
+     * 				int cedula : el numero de cedula que queremos verificar
+     * Retorno:
+     * 				boolean : true si el numero de cedula se encuentra disponible, false si no
+     * */
+	public boolean numeroDeCedulaDisponibleEnAsociacion(int cedula) {
+		if(findByCedulaEnAsociacion(cedula) == null) {
+			return true;
+		}
+		return false;
+	}
+	
+	
+	/*
+     * Funcion para obtener un miembro de la Asociacion por numero de cedula
+     * Parametros:
+     * 				int cedula : el numero de cedula del empleado que queremos
+     * Retorno:
+     * 				AsociacionDeEmpleados actual : el miembro que coincide con el numero de cedula
+     * 				null : si no se encontro ningun empleado con dicho numero de cedula
+     * */
+	public AsociacionDeEmpleados findByCedulaEnAsociacion(int cedula) {
+		Iterator<AsociacionDeEmpleados> iteratorMiembros = miembroRepository.findAll().iterator();
+		while(iteratorMiembros.hasNext()) {
+			AsociacionDeEmpleados actual = iteratorMiembros.next();
+			if (cedula== actual.getNumeroCedulaMiembro()) {
 				return actual;
 			}
 		}

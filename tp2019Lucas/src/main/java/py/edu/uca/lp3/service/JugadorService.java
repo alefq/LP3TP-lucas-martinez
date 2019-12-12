@@ -87,20 +87,21 @@ public class JugadorService {
      * 				ArrayList<Jugador> listaJugadors: un arraylist con los jugadores del club
      * */
 	public ArrayList<Jugador> findJugadorsByClub(String club) {
-		ArrayList<Jugador> listaJugadors = new ArrayList<Jugador>();
+		ArrayList<Jugador> listaJugadores = new ArrayList<Jugador>();
 		/*for (Jugador jugadorIteracion : jugadoresExampleList) {
 			if (club != null && club.equals(jugadorIteracion.getClub())) {
 				listaJugadors.add(jugadorIteracion);
 			}
 		}*/
-		Iterator<Jugador> iteratorJugadors = jugadorRepository.findAll().iterator();
-		while(iteratorJugadors.hasNext()) {
-			if (club != null && club.equals(iteratorJugadors.next().getClub())) {
-				listaJugadors.add(iteratorJugadors.next());
+		Iterator<Jugador> iteratorJugadores = jugadorRepository.findAll().iterator();
+		while(iteratorJugadores.hasNext()) {
+			Jugador actual = iteratorJugadores.next();
+			if (club != null && club.equals(actual.getClub())) {
+				listaJugadores.add(actual);
 			}
 
 		}
-		return listaJugadors;
+		return listaJugadores;
 	}
 	
 	/*

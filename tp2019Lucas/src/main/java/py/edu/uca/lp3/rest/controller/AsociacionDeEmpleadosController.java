@@ -44,13 +44,24 @@ public class AsociacionDeEmpleadosController {
 			AsociacionDeEmpleadoService.saveList(miembros);
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			String email = e.getContacto();
+			System.out.println("Ocurrió un error al inscribir los jugadores: " + e.getMessage());
 		}
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable("id") Long id) {
-    	AsociacionDeEmpleadoService.delete(id);
+    /*
+     * Llama a la funcion para eliminar un empleado por su numero de cedula por DELETE
+     * por metodo DELETE
+     */
+    @RequestMapping(value = "/{cedula}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable("cedula") int cedula) {
+    	try {
+			AsociacionDeEmpleadoService.deleteByCedula(cedula);
+		} catch (InscripcionException e) {
+			// TODO Auto-generated catch block
+			String email = e.getContacto();
+			System.out.println("Ocurrió un error al tratar de elimniar al jugador: " + e.getMessage());
+		}
     }
 
 }

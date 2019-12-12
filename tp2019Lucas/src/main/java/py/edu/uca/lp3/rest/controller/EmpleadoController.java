@@ -30,7 +30,7 @@ public class EmpleadoController {
      * Llama a la funcion para ver a todos los empleados de un club
      * {club} el club que queremos ver
      * */
-	@RequestMapping(value = "/{club}", method = RequestMethod.GET)
+	@RequestMapping(value = "/club/{club}", method = RequestMethod.GET)
 	public ArrayList<Empleado> obtenerEquipos(@PathVariable("club") String club) {
 		return empleadoService.findEmpleadosByClub(club);
 	}
