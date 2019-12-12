@@ -2,6 +2,11 @@ package py.edu.uca.lp3exceptions;
 
 public class InscripcionException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3856296557752711899L;
+	
 	private String contacto;
 
 	public InscripcionException() {

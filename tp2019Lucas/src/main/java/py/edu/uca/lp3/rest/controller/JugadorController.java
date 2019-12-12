@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import py.edu.uca.lp3.constants.ApiPaths;
@@ -29,9 +28,9 @@ public class JugadorController {
      * Llama a la funcion para ver a todos los jugadores de un club por GET
      * {club} el club que queremos ver
      * */
-	@RequestMapping(value = "/{club}", method = RequestMethod.GET)
+	@RequestMapping(value = "/equipo/{club}", method = RequestMethod.GET)
 	public ArrayList<Jugador> obtenerEquipos(@PathVariable("club") String club) {
-		return jugadorService.findJugadorsByClub(club);
+		return jugadorService.findJugadoresByClub(club);
 	}
 	
 
@@ -59,7 +58,21 @@ public class JugadorController {
 			jugadorService.saveList(jugadores);
 		} catch (InscripcionException e) {
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los jugadores: " + e.getMessage());
+			System.out.println("Ocurrió un error al inscribir los jugadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
+		}
+    }
+    
+    /*
+     * Llama a la funcion para agregar una lista de jugadores al inicio por POST
+     * asi no se evalua el tope salarial ya que al comienzo este es cero
+     * */
+    @RequestMapping(value = "/inicializar", method = RequestMethod.POST)
+    public void addInit(@RequestBody List<Jugador> jugadores) {
+    	try {
+			jugadorService.saveListInicio(jugadores);
+		} catch (InscripcionException e) {
+			String email = e.getContacto();
+			System.out.println("Ocurrió un error al inscribir los jugadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
 
@@ -74,7 +87,7 @@ public class JugadorController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al tratar de elimniar al jugador: " + e.getMessage());
+			System.out.println("Ocurrió un error al tratar de elimniar al jugador: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
     
@@ -90,7 +103,7 @@ public class JugadorController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los jugadores: " + e.getMessage());
+			System.out.println("Ocurrió un error al inscribir los jugadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
     
@@ -106,7 +119,7 @@ public class JugadorController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los jugadores: " + e.getMessage());
+			System.out.println("Ocurrió un error al inscribir los jugadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
     
@@ -122,7 +135,7 @@ public class JugadorController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los jugadores: " + e.getMessage());
+			System.out.println("Ocurrió un error al inscribir los jugadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
     
@@ -138,8 +151,20 @@ public class JugadorController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los jugadores: " + e.getMessage());
+			System.out.println("Ocurrió un error al inscribir los jugadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
+    }
+    
+    @RequestMapping(value = "/equipo/{club}/promedio-salario", method = RequestMethod.GET)
+    public String obtenerPromedioSalarioJugadorPorClub(@PathVariable("club") String club) {
+    	String respuesta = jugadorService.promedioSalarioJugadorEnClub(club);
+        return respuesta;
+    }
+    
+    @RequestMapping(value = "/promedio-salario", method = RequestMethod.GET)
+    public String obtenerPromedioSalarioJugador() {
+    	String respuesta = jugadorService.promedioSalarioJugador();
+        return respuesta;
     }
 
 }

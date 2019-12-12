@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import java.lang.Integer;
 import java.lang.Long;
 
 import javax.annotation.Resource;
@@ -86,11 +85,6 @@ public class EmpleadoService {
      * */
 	public ArrayList<Empleado> findEmpleadosByClub(String club) {
 		ArrayList<Empleado> listaEmpleados = new ArrayList<Empleado>();
-		/*for (Empleado empleadoIteracion : empleadosExampleList) {
-			if (club != null && club.equals(empleadoIteracion.getClub())) {
-				listaEmpleados.add(empleadoIteracion);
-			}
-		}*/
 		Iterator<Empleado> iteratorEmpleados = empleadoRepository.findAll().iterator();
 		while(iteratorEmpleados.hasNext()) {
 			Empleado actual = iteratorEmpleados.next();
@@ -136,6 +130,12 @@ public class EmpleadoService {
 			}else if(!numeroDeCedulaDisponible(aGuardar.getNumeroCedula())) {
 				InscripcionException inscripcionException = new InscripcionException(//System.out.println(
 						"Ya existe una persona con el numero de cedula: " + aGuardar.getNumeroCedula());
+				inscripcionException.setContacto(Contacto.INSCRIPCION);
+				throw inscripcionException;
+			}
+			if(aGuardar.getCargo().equals("Director") || aGuardar.getCargo().equals("Jugador") || aGuardar.getCargo().equals("Entrenador")) {
+				InscripcionException inscripcionException = new InscripcionException(//System.out.println(
+						"Este servicio POST no es valido para el cargo: " + aGuardar.getCargo());
 				inscripcionException.setContacto(Contacto.INSCRIPCION);
 				throw inscripcionException;
 			}
@@ -384,6 +384,32 @@ public class EmpleadoService {
 		long x = promedioSalarial;
 		long tope = (long) (x + 0.2*x + 0.3*1.2*x);
 		return tope;
+	}
+	
+	/*
+	 * Funcion para obtener el promedio del salario de todos los empleados de un equipo/club
+	 * Parametros:
+	 * 				String club : el nombre del club
+	 * Retorno:
+	 * 				String respuesta : un string en formato ("El promedio de salario por equipo es: "{PROMEDIO})
+	 * */
+	public String promedioSalarioEmpleadoEnClub(String club) {
+		long sumaSalarios = 0;
+		int cantidadDeEmpleados;
+		Equipo actual = objEquipo(club);
+		if(actual == null) {
+			return ("El equipo "+club+" no existe.");
+		}
+		ArrayList<Empleado> empleadosList = findEmpleadosByClub(club);
+		cantidadDeEmpleados = empleadosList.size();
+		if(cantidadDeEmpleados < 1) {
+			return ("No hay empleados en el equipo: "+club);
+		}
+		for(Empleado empleado:empleadosList) {
+			sumaSalarios += empleado.getSalario();
+		}
+		
+		return ("El promedio de salario por equipo es: " +Long.divideUnsigned(sumaSalarios, cantidadDeEmpleados));
 	}
 	
 	

@@ -1,6 +1,5 @@
 package py.edu.uca.lp3.rest.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import py.edu.uca.lp3.constants.ApiPaths;
-import py.edu.uca.lp3.domain.AsociacionDeEmpleados;
 import py.edu.uca.lp3.domain.AsociacionDeEmpleados;
 import py.edu.uca.lp3.service.AsociacionDeEmpleadosService;
 import py.edu.uca.lp3exceptions.InscripcionException;
@@ -24,7 +21,7 @@ public class AsociacionDeEmpleadosController {
 	// Simulamos el design pattern de Controller-Service-Data_Access
 	// típico de aplicaciones basadas en el framework Spring
 	@Autowired
-	private AsociacionDeEmpleadosService AsociacionDeEmpleadoService;// = AsociacionDeEmpleadosService.buildInstance();
+	private AsociacionDeEmpleadosService AsociacionDeEmpleadoService;
 	
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -45,7 +42,7 @@ public class AsociacionDeEmpleadosController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los jugadores: " + e.getMessage());
+			System.out.println("Ocurrió un error al inscribir los jugadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
 
@@ -60,7 +57,7 @@ public class AsociacionDeEmpleadosController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al tratar de elimniar al jugador: " + e.getMessage());
+			System.out.println("Ocurrió un error al tratar de elimniar al jugador: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
 

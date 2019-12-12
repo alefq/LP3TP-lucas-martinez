@@ -1,5 +1,8 @@
 package py.edu.uca.lp3.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,24 +16,37 @@ public class Equipo {
 	private long id;
 	
 	private long salarioClub; //cuanto el club paga anual
+	private long impuestoRentaPersonal;
 	private long impuestoTecnologia;
 	private long impuestoPromocion;
 	private long impuestoLujo;
-	private boolean elEquipoPagoImpuestoDeLujo;
+	private boolean elEquipoPagoImpuestoDeLujo = false;
 	private long aumentoPorLujo = 0;
 	private String nombre;
+	private boolean calificaParaInternacional = false;
+
+	private long topeSalarial; 
+	private long promedioSalarial;//promedio del salario por equipo
 	
-	private long topeSalarial = 5000; //promedio del salario por equipo
-	private long promedioSalarial;
+	private String viajes;
+	private String tecnologias;
+	private ArrayList<String> ong;
 	
-	public Equipo() {
-		super();
-		this.impuestoTecnologia = (long) (0.04 * salarioClub);
-		this.impuestoPromocion = (long) (0.02 * salarioClub);
-		this.impuestoLujo = (long) (0.3 * salarioClub);
+	Equipo() {
+		impuestoRentaPersonal = (long) (0.10 * salarioClub);
+		impuestoTecnologia = (long) (0.04 * salarioClub);
+		impuestoPromocion = (long) (0.02 * salarioClub);
+		impuestoLujo = (long) (0.3 * salarioClub);
 	}
 
 	public long getSalarioClub() {
+		if(isElEquipoPagoImpuestoDeLujo()) {
+			return (salarioClub + aumentoPorLujo +impuestoPromocion + impuestoTecnologia + impuestoRentaPersonal);
+		}
+		return (salarioClub +impuestoPromocion + impuestoTecnologia + impuestoRentaPersonal);
+	}
+	
+	public long getSalarioNetoClub() {
 		if(isElEquipoPagoImpuestoDeLujo()) {
 			return (salarioClub + aumentoPorLujo);
 		}
@@ -109,8 +125,47 @@ public class Equipo {
 		long aumento = (long) (0.2 * getTopeSalarial());
 		this.aumentoPorLujo = aumento;
 	}
-
 	
+	
+	public boolean isCalificaParaInternacional() {
+		return calificaParaInternacional;
+	}
+
+	public void setCalificaParaInternacional(boolean calificaParaInternacional) {
+		this.calificaParaInternacional = calificaParaInternacional;
+	}
+
+	public long getImpuestoRentaPersonal() {
+		return impuestoRentaPersonal;
+	}
+
+	public void setImpuestoRentaPersonal() {
+		this.impuestoRentaPersonal = (long)(this.salarioClub * 0.02);
+	}
+
+	public String getViajes() {
+		return viajes;
+	}
+
+	public void setViajes(String viajes) {
+		this.viajes = viajes;
+	}
+
+	public String getTecnologias() {
+		return tecnologias;
+	}
+
+	public void setTecnologias(String tecnologias) {
+		this.tecnologias = tecnologias;
+	}
+
+	public List<String> getOng() {
+		return ong;
+	}
+
+	public void setOng(ArrayList<String> ong) {
+		this.ong = ong;
+	}
 	
 	
 	

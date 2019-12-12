@@ -14,5 +14,6 @@ public class ApiPaths {
 	public static final String DIRECTORES = BASE_API + "/directores";
 	public static final String TORNEOS = BASE_API + "/torneos";
 	public static final String ASOCIACIONDEEMPLEADOS = BASE_API + "/asociacion-de-empleados";
+	public static final String ONG = BASE_API + "/ong";
 
 }

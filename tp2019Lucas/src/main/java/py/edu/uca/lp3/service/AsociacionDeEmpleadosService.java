@@ -12,10 +12,8 @@ import org.springframework.stereotype.Service;
 import py.edu.uca.lp3.constants.Contacto;
 import py.edu.uca.lp3.domain.AsociacionDeEmpleados;
 import py.edu.uca.lp3.domain.Empleado;
-import py.edu.uca.lp3.domain.Equipo;
 import py.edu.uca.lp3.repository.AsociacionDeEmpleadosRepository;
 import py.edu.uca.lp3.repository.EmpleadoRepository;
-import py.edu.uca.lp3.repository.EquipoRepository;
 import py.edu.uca.lp3exceptions.InscripcionException;
 
 @Service
@@ -58,7 +56,7 @@ public class AsociacionDeEmpleadosService {
 		if(miembro == null) {
 			InscripcionException inscripcionException = new InscripcionException(//System.out.println(
 					"No existe un miembro en la asociacion con numero de cedula: "+cedula);
-			inscripcionException.setContacto(Contacto.INSCRIPCION);
+			inscripcionException.setContacto(Contacto.ASOCIACION);
 			throw inscripcionException;
 		}
 		long id = miembro.getId();
@@ -78,19 +76,19 @@ public class AsociacionDeEmpleadosService {
 			if(aGuardar<0) {
 				InscripcionException inscripcionException = new InscripcionException(//System.out.println(
 						"Numero de cedula invalido: "+aGuardar);
-				inscripcionException.setContacto(Contacto.INSCRIPCION);
+				inscripcionException.setContacto(Contacto.ASOCIACION);
 				throw inscripcionException;
 			}else if(numeroDeCedulaDisponible(aGuardar)) {
 				InscripcionException inscripcionException = new InscripcionException(//System.out.println(
 						"No existe una persona con el numero de cedula: " + aGuardar);
-				inscripcionException.setContacto(Contacto.INSCRIPCION);
+				inscripcionException.setContacto(Contacto.ASOCIACION);
 				throw inscripcionException;
 			}
 			
 			if(!numeroDeCedulaDisponibleEnAsociacion(aGuardar)) {
 				InscripcionException inscripcionException = new InscripcionException(
 						"Ya existe una persona en la asociacion de empleados con el numero de cedula: " + aGuardar);
-				inscripcionException.setContacto(Contacto.INSCRIPCION);
+				inscripcionException.setContacto(Contacto.ASOCIACION);
 				throw inscripcionException;
 			}
 			

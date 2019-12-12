@@ -8,12 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import py.edu.uca.lp3.constants.ApiPaths;
-import py.edu.uca.lp3.domain.Entrenador;
-import py.edu.uca.lp3.domain.Entrenador;
 import py.edu.uca.lp3.domain.Entrenador;
 import py.edu.uca.lp3.service.EntrenadorService;
 import py.edu.uca.lp3exceptions.InscripcionException;
@@ -32,9 +29,9 @@ public class EntrenadorController {
      * Llama a la funcion para ver a todos los entrenadores de un club por GET
      * {club} el club que queremos ver
      * */
-	@RequestMapping(value = "/{club}", method = RequestMethod.GET)
+	@RequestMapping(value = "/equipo/{club}", method = RequestMethod.GET)
 	public ArrayList<Entrenador> obtenerEquipos(@PathVariable("club") String club) {
-		return entrenadorService.findEntrenadorByClub(club);
+		return entrenadorService.findEntrenadoresByClub(club);
 	}
 	
 
@@ -62,7 +59,7 @@ public class EntrenadorController {
 			entrenadorService.saveList(entrenadores);
 		} catch (InscripcionException e) {
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los entrenadores: " + e.getMessage());
+			System.out.println("Ocurrió un error al inscribir los entrenadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
 
@@ -77,7 +74,7 @@ public class EntrenadorController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al tratar de elimniar al entrenador: " + e.getMessage());
+			System.out.println("Ocurrió un error al tratar de elimniar al entrenador: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
     
@@ -93,7 +90,7 @@ public class EntrenadorController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los entrenadores: " + e.getMessage());
+			System.out.println("Ocurrió un error al inscribir los entrenadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
     
@@ -109,7 +106,7 @@ public class EntrenadorController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los entrenadores: " + e.getMessage());
+			System.out.println("Ocurrió un error al inscribir los entrenadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
     
@@ -125,7 +122,7 @@ public class EntrenadorController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los entrenadores: " + e.getMessage());
+			System.out.println("Ocurrió un error al inscribir los entrenadores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
     

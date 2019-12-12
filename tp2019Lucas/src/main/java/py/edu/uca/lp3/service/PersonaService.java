@@ -1,72 +1,154 @@
 package py.edu.uca.lp3.service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import py.edu.uca.lp3.constants.Contacto;
 import py.edu.uca.lp3.domain.Persona;
+import py.edu.uca.lp3.repository.PersonaRepository;
+import py.edu.uca.lp3exceptions.InscripcionException;
 
 @Service
 public class PersonaService {
 
-	// Utilizamos una clave maestra con esta constante, con fines didácticos
-	private static final String MASTERKEY = "123456";
-
-	//Esta implementación de la interface java.util.List será el contenedor 
-	//de nuestra lista de personas para los ejemplos de clase
-	private List<Persona> personasExampleList = new ArrayList<Persona>();
-
-	public PersonaService() {
-		initializeExamples();
+	@Autowired
+	private PersonaRepository personaRepository;
+	
+	
+	/*
+     * Funcion para obtener un persona en especifico
+     * Parametros:
+     * 				Long id : id del persona que qeremos
+     * Retorno:
+     * 				Persona persona : el persona con id = id
+     * */
+	public Persona findById(Long id) {
+		Persona persona = personaRepository.findOne(id);
+		return persona;
 	}
 
-	private void initializeExamples() {
-		// Inicializamos dos personas de ejemplo
-		Persona luca = new Persona();
-		luca.setNumeroCedula(111);
-		luca.setNombre("Luca");
-		Persona bart = new Persona();
-		bart.setNumeroCedula(222);
-		bart.setNombre("Bart");
-
-		// Agragamos a nuestra lista
-		personasExampleList.add(luca);
-		personasExampleList.add(bart);
+	/*
+     * Funcion para obtener una lista de todos los personas
+     * Parametros:
+     * 				ninguno
+     * Retorno:
+     * 				List<Persona> personas : la lista de todos los personas
+     * */
+	public List<Persona> findAll() {
+		List<Persona> personas = new ArrayList<>();
+		Iterator<Persona> iteratorPersonas = personaRepository.findAll().iterator();
+		while(iteratorPersonas.hasNext()) {
+			personas.add(iteratorPersonas.next());
+		}
+		return personas;
 	}
 
-	public Persona findPersonaByNroCedula(Integer numeroCedula) {
-		Persona personaARetornar = null;
-		// En este ejemplo recorremos la lista de ejemplo
-		// en un ejemplo más complejo de uso real consultaríamos un repositorio de datos
-		// Base de Datos, otro Web Service, algún servicio de mensajería, etc.
-		for (Persona personaIteracion : personasExampleList) {
-			if (numeroCedula != null && numeroCedula.equals(personaIteracion.getNumeroCedula())) {
-				personaARetornar = personaIteracion;
+	/*
+     * Funcion para guardar un persona con persistencia
+     * Parametros:
+     * 				Persona persona : el persona que guardaremos con persistencia
+     * Retorno:
+     * 				ninguno
+     * */
+	public void save(Persona persona) {
+		personaRepository.save(persona);
+	}
+
+	/*
+     * Funcion para eliminar un persona con un id especifico de la persistencia
+     * Parametros:
+     * 				Long id : el ide del persona que queremos eliminar
+     * Retorno:
+     * 				ninguno
+     * */
+	public void delete(Long id) {
+		personaRepository.delete(id);
+	}
+	
+	
+	/*
+     * Funcion para guardar una lista de personas con persistencia
+     * Parametros:
+     * 				List<Persona> personas : la lista de lospersonas que guardaremos con persistencia
+     * Retorno:
+     * 				ninguno
+     * */
+	public void saveList(List<Persona> personas) throws InscripcionException {
+		//EquipoService equipoServ = new EquipoService();
+		for (Persona aGuardar : personas) {
+			if(aGuardar.getNumeroCedula()<0) {
+				InscripcionException inscripcionException = new InscripcionException(//System.out.println(
+						"Numero de cedula invalido: "+aGuardar.getNumeroCedula());
+				inscripcionException.setContacto(Contacto.INSCRIPCION);
+				throw inscripcionException;
+			}else if(!numeroDeCedulaDisponible(aGuardar.getNumeroCedula())) {
+				InscripcionException inscripcionException = new InscripcionException(//System.out.println(
+						"Ya existe una persona con el numero de cedula: " + aGuardar.getNumeroCedula());
+				inscripcionException.setContacto(Contacto.INSCRIPCION);
+				throw inscripcionException;
+			}
+			save(aGuardar);
+			
+		}
+	}
+	
+	/*
+     * Funcion para verificar si un numero de cedula especifico se encuentra disponible (si no hay nadie ya utilizando ese numero de cedula)
+     * Parametros:
+     * 				int cedula : el numero de cedula que queremos verificar
+     * Retorno:
+     * 				boolean : true si el numero de cedula se encuentra disponible, false si no
+     * */
+	public boolean numeroDeCedulaDisponible(int cedula) {
+		if(findByCedula(cedula) == null) {
+			return true;
+		}
+		return false;
+	}
+	
+	/*
+     * Funcion para obtener un persona por numerio de cedula
+     * Parametros:
+     * 				int cedula : el numero de cedula del persona que queremos
+     * Retorno:
+     * 				Persona actual : el persona que coincide con el numero de cedula
+     * 				null : si no se encontro ningun persona con dicho numero de cedula
+     * */
+	public Persona findByCedula(int cedula) {
+		Iterator<Persona> iteratorPersonas = personaRepository.findAll().iterator();
+		while(iteratorPersonas.hasNext()) {
+			Persona actual = iteratorPersonas.next();
+			if (cedula== actual.getNumeroCedula()) {
+				return actual;
 			}
 		}
-		return personaARetornar;
+		return null;
 	}
-
-	public static PersonaService buildInstance() {
-		// Para fines didácticos este factory retorna una instancia común
-		// En un ambiente de Spring Boot completo esto sería un @Service
-		// que se haría @Autowired
-		return new PersonaService();
-	}
-
-	public Persona validateLogin(String username, String password) {
-		Persona personaEncontrada;
-		if (StringUtils.isNoneBlank(username, password) && password.equals(MASTERKEY)) {
-			// Con fines didácticos, la autenticación se
-			personaEncontrada = new Persona("Ale", "F.", 41);
-		} else {
-			// Con fines didácticos si la contraseña no coincide con el MASTERKEY informamos
-			// que hay problemas con las credenciales
-			personaEncontrada = null;
+	
+	/*
+     * Funcion para eliminar un persona de la persistencia utilizando su numero de cedula
+     * Parametros:
+     * 				int cedula : el numero de cedula del persona que queremos eliminar
+     * Retorno:
+     * 				ninguno
+     * */
+	public void deleteByCedula(int cedula) throws InscripcionException {
+		Persona persona = findByCedula(cedula);
+		if(persona == null) {
+			InscripcionException inscripcionException = new InscripcionException(//System.out.println(
+					"No un persona con numero de cedula: "+cedula);
+			inscripcionException.setContacto(Contacto.INSCRIPCION);
+			throw inscripcionException;
 		}
-		return personaEncontrada;
+		long id = persona.getId();
+		personaRepository.delete(id);
 	}
+
+
+
 
 }

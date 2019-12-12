@@ -8,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class Torneo implements Serializable {
@@ -39,10 +38,10 @@ public class Torneo implements Serializable {
 	public void setParticipantes(ArrayList<String> participantes) {
 		this.participantes = participantes;
 	}
-	public String getNacionalInternacional() {
+	public String getTipo() {
 		return tipo;
 	}
-	public void setNacionalInternacional(String nacionalInternacional) {
+	public void setTipo(String nacionalInternacional) {
 		this.tipo = nacionalInternacional;
 	}
 	public long getId() {

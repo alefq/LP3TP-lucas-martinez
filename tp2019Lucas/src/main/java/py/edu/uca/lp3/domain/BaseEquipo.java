@@ -2,8 +2,6 @@ package py.edu.uca.lp3.domain;
 
 import java.util.Iterator;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import py.edu.uca.lp3.repository.EquipoRepository;

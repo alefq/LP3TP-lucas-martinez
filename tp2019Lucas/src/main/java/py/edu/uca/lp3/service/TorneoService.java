@@ -9,10 +9,12 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import py.edu.uca.lp3.constants.Contacto;
 import py.edu.uca.lp3.domain.Equipo;
 import py.edu.uca.lp3.domain.Torneo;
 import py.edu.uca.lp3.repository.EquipoRepository;
 import py.edu.uca.lp3.repository.TorneoRepository;
+import py.edu.uca.lp3exceptions.InscripcionException;
 
 @Service
 public class TorneoService {
@@ -41,23 +43,59 @@ public class TorneoService {
 		torneoRepository.delete(id);
 	}
 
-	public void saveList(List<Torneo> torneos) {
+	public void saveList(List<Torneo> torneos) throws InscripcionException {
 		for (Torneo aGuardar : torneos) {
-			boolean participanteNoExiste = false;
 			if (isNombreDisponible(aGuardar.getNombreDelTorneo())) {
 				for(String participante:aGuardar.getParticipantes()) {
 					if(objEquipo(participante) == null) {
-						System.out.println("Para el torneo: "+aGuardar.getNombreDelTorneo()+", el equipo: "+participante+" no pudo ser inscripto porque no existe. Corrija la lista de particioantes y vuelva a intentarlo.Pasando al siguiente torneo (si existe)");
-						participanteNoExiste = true;
-						break;
+						InscripcionException inscripcionException = new InscripcionException(
+								"Para el torneo: "+aGuardar.getNombreDelTorneo()+", el equipo: "+participante+" no pudo ser inscripto porque no existe. Corrija la lista de particioantes y vuelva a intentarlo.");
+						inscripcionException.setContacto(Contacto.TORNEO);
+						throw inscripcionException;
 					}
-				}
-				if(participanteNoExiste) {
-					continue;
+					if(aGuardar.getTipo() == "Internacional" && !objEquipo(participante).isCalificaParaInternacional()) {
+						InscripcionException inscripcionException = new InscripcionException(//System.out.println(
+								"El equipo: "+ participante +" no ha calificado para el torneo internacional: "+aGuardar.getNombreDelTorneo());
+						inscripcionException.setContacto(Contacto.TORNEOINTERNACIONAL);
+						throw inscripcionException;
+					}
 				}
 				save(aGuardar);
 			}else {
-				System.out.println("No se puede crear el torneo, el torneo: "+aGuardar.getNombreDelTorneo()+" ya existe");
+				InscripcionException inscripcionException = new InscripcionException(
+						"No se puede crear el torneo, el torneo: "+aGuardar.getNombreDelTorneo()+" ya existe");
+				inscripcionException.setContacto(Contacto.TORNEO);
+				throw inscripcionException;
+			}
+			
+		}
+	}
+	
+	public void editList(List<Torneo> torneos) throws InscripcionException {
+		for (Torneo aGuardar : torneos) {
+			if (!isNombreDisponible(aGuardar.getNombreDelTorneo())) {
+				for(String participante:aGuardar.getParticipantes()) {
+					if(objEquipo(participante) == null) {
+						InscripcionException inscripcionException = new InscripcionException(
+								"Para el torneo: "+aGuardar.getNombreDelTorneo()+", el equipo: "+participante+" no pudo ser inscripto porque no existe. Corrija la lista de particioantes y vuelva a intentarlo.");
+						inscripcionException.setContacto(Contacto.TORNEO);
+						throw inscripcionException;
+					}
+					if(aGuardar.getTipo() == "Internacional" && !objEquipo(participante).isCalificaParaInternacional()) {
+						InscripcionException inscripcionException = new InscripcionException(//System.out.println(
+								"El equipo: "+ participante +" no ha calificado para el torneo internacional: "+aGuardar.getNombreDelTorneo());
+						inscripcionException.setContacto(Contacto.TORNEOINTERNACIONAL);
+						throw inscripcionException;
+					}
+				}
+				Torneo torneoExistente = findByName(aGuardar.getNombreDelTorneo());
+				torneoExistente.setParticipantes(aGuardar.getParticipantes());
+				save(torneoExistente);
+			}else {
+				InscripcionException inscripcionException = new InscripcionException(
+						"No se puede modificar el torneo: "+aGuardar.getNombreDelTorneo()+" porque no existe");
+				inscripcionException.setContacto(Contacto.TORNEO);
+				throw inscripcionException;
 			}
 			
 		}
@@ -81,28 +119,6 @@ public class TorneoService {
 		return false;
 	}
 	
-	public void editTorneoList(List <Torneo> torneos) {
-		for (Torneo aGuardar : torneos) {
-			Torneo elTorneo = findByName(aGuardar.getNacionalInternacional());
-			if(elTorneo == null) {
-				System.out.println("No puede editar el torneo: "+aGuardar.getNombreDelTorneo()+" porque ese torneo no existe");
-			}else {
-				boolean participanteNoExiste = false;
-				for(String participante:aGuardar.getParticipantes()) {
-					if(objEquipo(participante) == null) {
-						System.out.println("Para el torneo: "+aGuardar.getNombreDelTorneo()+", el equipo: "+participante+" no pudo ser inscripto porque no existe. Corrija la lista de particioantes y vuelva a intentarlo.Pasando al siguiente torneo (si existe)");
-						participanteNoExiste = true;
-						break;
-					}
-				}
-				if (!participanteNoExiste) {
-					save(aGuardar);
-					delete(elTorneo.getId());
-				}
-				
-			}
-		}
-	}
 	
 	@Resource
 	private EquipoRepository equipoRepository;
@@ -116,6 +132,27 @@ public class TorneoService {
 			}
 		}
 		return null;
+	}
+	
+	public String findPromedioSalarioEquipos(String nombreTorneo) {
+		long sumaSalarios = 0;
+		int cantidadDeEquipos;
+		Torneo actual = findByName(nombreTorneo);
+		if(actual == null) {
+			return ("El torneo "+nombreTorneo+" no existe.");
+		}
+		ArrayList<String> participantes = actual.getParticipantes();
+		cantidadDeEquipos = participantes.size();
+		if(cantidadDeEquipos < 1) {
+			return ("No hay participantes en el torneo: "+nombreTorneo);
+		}
+		Equipo aEvaluar;
+		for(String equipo:participantes) {
+			aEvaluar = objEquipo(equipo);
+			sumaSalarios += aEvaluar.getSalarioClub();
+		}
+		
+		return ("El promedio de salario por equipo es: " +Long.divideUnsigned(sumaSalarios, cantidadDeEquipos));
 	}
 	
 

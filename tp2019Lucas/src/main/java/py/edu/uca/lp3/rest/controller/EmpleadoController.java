@@ -8,11 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import py.edu.uca.lp3.constants.ApiPaths;
-import py.edu.uca.lp3.domain.Empleado;
 import py.edu.uca.lp3.domain.Empleado;
 import py.edu.uca.lp3.service.EmpleadoService;
 import py.edu.uca.lp3exceptions.InscripcionException;
@@ -30,7 +28,7 @@ public class EmpleadoController {
      * Llama a la funcion para ver a todos los empleados de un club
      * {club} el club que queremos ver
      * */
-	@RequestMapping(value = "/club/{club}", method = RequestMethod.GET)
+	@RequestMapping(value = "/equipo/{club}", method = RequestMethod.GET)
 	public ArrayList<Empleado> obtenerEquipos(@PathVariable("club") String club) {
 		return empleadoService.findEmpleadosByClub(club);
 	}
@@ -60,7 +58,7 @@ public class EmpleadoController {
 			empleadoService.saveList(empleados);
 		} catch (InscripcionException e) {
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los empleados: " + e.getMessage());
+			System.out.println("Ocurrió un error al inscribir los empleados: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
 
@@ -75,7 +73,7 @@ public class EmpleadoController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al tratar de elimniar al empleado: " + e.getMessage());
+			System.out.println("Ocurrió un error al tratar de elimniar al empleado: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
     
@@ -90,7 +88,7 @@ public class EmpleadoController {
 			empleadoService.transferir(cedula, nuevoClub);
 		} catch (InscripcionException e) {
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los empleados: " + e.getMessage());
+			System.out.println("Ocurrió un error al inscribir los empleados: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
     
@@ -106,7 +104,7 @@ public class EmpleadoController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los empleados: " + e.getMessage());
+			System.out.println("Ocurrió un error al inscribir los empleados: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
     
@@ -122,8 +120,14 @@ public class EmpleadoController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los empleados: " + e.getMessage());
+			System.out.println("Ocurrió un error al inscribir los empleados: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
+    }
+    
+    @RequestMapping(value = "/equipo/{club}/promedio-salario", method = RequestMethod.GET)
+    public String obtenerPromedioSalarioEmpleadoPorClub(@PathVariable("club") String club) {
+    	String respuesta = empleadoService.promedioSalarioEmpleadoEnClub(club);
+        return respuesta;
     }
 
 }

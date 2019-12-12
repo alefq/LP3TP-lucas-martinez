@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import java.lang.Integer;
 import java.lang.Long;
 
 import javax.annotation.Resource;
@@ -86,13 +85,8 @@ public class JugadorService {
      * Retorno:
      * 				ArrayList<Jugador> listaJugadors: un arraylist con los jugadores del club
      * */
-	public ArrayList<Jugador> findJugadorsByClub(String club) {
+	public ArrayList<Jugador> findJugadoresByClub(String club) {
 		ArrayList<Jugador> listaJugadores = new ArrayList<Jugador>();
-		/*for (Jugador jugadorIteracion : jugadoresExampleList) {
-			if (club != null && club.equals(jugadorIteracion.getClub())) {
-				listaJugadors.add(jugadorIteracion);
-			}
-		}*/
 		Iterator<Jugador> iteratorJugadores = jugadorRepository.findAll().iterator();
 		while(iteratorJugadores.hasNext()) {
 			Jugador actual = iteratorJugadores.next();
@@ -146,6 +140,42 @@ public class JugadorService {
 			
 		}
 	}
+	
+	/*
+     * Funcion para guardar una lista de jugadores con persistencia al inicio (no evalua el promedio ni el tope salarial)
+     * Se utiliza para asi, luego de cargar tus equipos, se pueda calcular el promedio y el tope salarial
+     * Parametros:
+     * 				List<Jugador> jugadores : la lista de losjugadores que guardaremos con persistencia
+     * Retorno:
+     * 				ninguno
+     * */
+	public void saveListInicio(List<Jugador> jugadores) throws InscripcionException {
+		for (Jugador aGuardar : jugadores) {
+			Equipo equipo = objEquipo(aGuardar.getClub());
+			if (equipo == null) {
+				InscripcionException inscripcionException = new InscripcionException(
+						"No se ha encontrado un equipo con el nombre: " + aGuardar.getClub());
+				inscripcionException.setContacto(Contacto.INSCRIPCION);
+				throw inscripcionException;
+			}
+			if(aGuardar.getNumeroCedula()<0) {
+				InscripcionException inscripcionException = new InscripcionException(
+						"Numero de cedula invalido: "+aGuardar.getNumeroCedula());
+				inscripcionException.setContacto(Contacto.INSCRIPCION);
+				throw inscripcionException;
+			}else if(!numeroDeCedulaDisponible(aGuardar.getNumeroCedula())) {
+				InscripcionException inscripcionException = new InscripcionException(
+						"Ya existe una persona con el numero de cedula: " + aGuardar.getNumeroCedula());
+				inscripcionException.setContacto(Contacto.INSCRIPCION);
+				throw inscripcionException;
+			}
+			actualizarSalarioSumar(equipo, aGuardar.getSalario());
+			save(aGuardar);
+			
+		}
+	}
+	
+	
 	
 	/*
      * Funcion para verificar si un numero de cedula especifico se encuentra disponible (si no hay nadie ya utilizando ese numero de cedula)
@@ -410,5 +440,54 @@ public class JugadorService {
 		long tope = (long) (x + 0.2*x + 0.3*1.2*x);
 		return tope;
 	}
+	
 
+	/*
+	 * Funcion para obtener el promedio del salario de todos los jugadores de un equipo/club
+	 * Parametros:
+	 * 				String club : el nombre del club
+	 * Retorno:
+	 * 				String respuesta : un string en formato ("El promedio de salario por equipo es: "{PROMEDIO})
+	 * */
+	public String promedioSalarioJugadorEnClub(String club) {
+		long sumaSalarios = 0;
+		int cantidadDeJugadores;
+		Equipo actual = objEquipo(club);
+		if(actual == null) {
+			return ("El equipo "+club+" no existe.");
+		}
+		ArrayList<Jugador> jugadoresList = findJugadoresByClub(club);
+		cantidadDeJugadores = jugadoresList.size();
+		if(cantidadDeJugadores < 1) {
+			return ("No hay jugadores en el equipo: "+club);
+		}
+		for(Jugador jugador:jugadoresList) {
+			sumaSalarios += jugador.getSalario();
+		}
+		
+		return ("El promedio de salario por equipo es: " +Long.divideUnsigned(sumaSalarios, cantidadDeJugadores));
+	}
+
+	
+	/*
+	 * Funcion para obtener el promedio del salario de todos los jugadores de un equipo/club
+	 * Parametros:
+	 * 				String club : el nombre del club
+	 * Retorno:
+	 * 				String respuesta : un string en formato ("El promedio de salario por equipo es: "{PROMEDIO})
+	 * */
+	public String promedioSalarioJugador() {
+		long sumaSalarios = 0;
+		int cantidadDeJugadores;
+		List<Jugador> jugadoresList = findAll();
+		cantidadDeJugadores = jugadoresList.size();
+		if(cantidadDeJugadores < 1) {
+			return ("No hay jugadores registrados");
+		}
+		for(Jugador jugador:jugadoresList) {
+			sumaSalarios += jugador.getSalario();
+		}
+		
+		return ("El promedio de salario por equipo es: " +Long.divideUnsigned(sumaSalarios, cantidadDeJugadores));
+	}
 }

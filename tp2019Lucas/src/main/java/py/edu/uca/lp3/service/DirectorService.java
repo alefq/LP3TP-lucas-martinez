@@ -6,17 +6,13 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import py.edu.uca.lp3.constants.Contacto;
 import py.edu.uca.lp3.domain.Director;
 import py.edu.uca.lp3.domain.Empleado;
-import py.edu.uca.lp3.domain.Director;
 import py.edu.uca.lp3.domain.Equipo;
-import py.edu.uca.lp3.domain.Director;
-import py.edu.uca.lp3.domain.Director;
 import py.edu.uca.lp3.repository.DirectorRepository;
 import py.edu.uca.lp3.repository.EquipoRepository;
 import py.edu.uca.lp3exceptions.InscripcionException;
@@ -88,15 +84,11 @@ public class DirectorService {
      * */
 	public ArrayList<Director> findDirectoresByClub(String club) {
 		ArrayList<Director> listaDirectores = new ArrayList<Director>();
-		/*for (Director directorIteracion : directoresExampleList) {
-			if (club != null && club.equals(directorIteracion.getClub())) {
-				listaDirectores.add(directorIteracion);
-			}
-		}*/
 		Iterator<Director> iteratorDirectores = directorRepository.findAll().iterator();
 		while(iteratorDirectores.hasNext()) {
-			if (club != null && club.equals(iteratorDirectores.next().getClub())) {
-				listaDirectores.add(iteratorDirectores.next());
+			Director actual = iteratorDirectores.next();
+			if (club != null && club.equals(actual.getClub())) {
+				listaDirectores.add(actual);
 			}
 
 		}
@@ -121,6 +113,12 @@ public class DirectorService {
 				inscripcionException.setContacto(Contacto.INSCRIPCION);
 				throw inscripcionException;
 				//continue; 
+			}
+			if(findDirectoresByClub(equipo.getNombre()).size()!=0){
+				InscripcionException inscripcionException = new InscripcionException(
+						"No se pudo agregar el director, el club ya cuenta con un director: "+equipo.getNombre());
+				inscripcionException.setContacto(Contacto.INSCRIPCION);
+				throw inscripcionException;
 			}
 			long sumaSalarios= Long.sum(equipo.getSalarioClub() , aGuardar.getSalario());
 			if ( sumaSalarios > equipo.getTopeSalarial() ) {

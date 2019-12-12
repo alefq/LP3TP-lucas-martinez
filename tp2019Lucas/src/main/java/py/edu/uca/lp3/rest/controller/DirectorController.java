@@ -8,11 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import py.edu.uca.lp3.constants.ApiPaths;
-import py.edu.uca.lp3.domain.Director;
 import py.edu.uca.lp3.domain.Director;
 import py.edu.uca.lp3.service.DirectorService;
 import py.edu.uca.lp3exceptions.InscripcionException;
@@ -30,7 +28,7 @@ public class DirectorController {
      * Llama a la funcion para ver a todos los directores de un club
      * {club} el club que queremos ver
      * */
-	@RequestMapping(value = "/{club}", method = RequestMethod.GET)
+	@RequestMapping(value = "/equipo/{club}", method = RequestMethod.GET)
 	public ArrayList<Director> obtenerEquipos(@PathVariable("club") String club) {
 		return directorService.findDirectoresByClub(club);
 	}
@@ -60,7 +58,7 @@ public class DirectorController {
 			directorService.saveList(directores);
 		} catch (InscripcionException e) {
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los directores: " + e.getMessage());
+			System.out.println("Ocurrió un error al inscribir los directores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
 
@@ -75,7 +73,7 @@ public class DirectorController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al tratar de elimniar al director: " + e.getMessage());
+			System.out.println("Ocurrió un error al tratar de elimniar al director: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
     
@@ -91,7 +89,7 @@ public class DirectorController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los directores: " + e.getMessage());
+			System.out.println("Ocurrió un error al inscribir los directores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
     
@@ -107,7 +105,7 @@ public class DirectorController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los directores: " + e.getMessage());
+			System.out.println("Ocurrió un error al inscribir los directores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
     
@@ -123,7 +121,7 @@ public class DirectorController {
 		} catch (InscripcionException e) {
 			// TODO Auto-generated catch block
 			String email = e.getContacto();
-			System.out.println("Ocurrió un error al inscribir los directores: " + e.getMessage());
+			System.out.println("Ocurrió un error al inscribir los directores: " + e.getMessage() + ". Para mas informacion contacte a: " + email);
 		}
     }
 

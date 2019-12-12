@@ -86,17 +86,13 @@ public class EntrenadorService {
      * Retorno:
      * 				ArrayList<Entrenador> listaEntrenadors: un arraylist con los entrenadores del club
      * */
-	public ArrayList<Entrenador> findEntrenadorsByClub(String club) {
+	public ArrayList<Entrenador> findEntrenadoresByClub(String club) {
 		ArrayList<Entrenador> listaEntrenadors = new ArrayList<Entrenador>();
-		/*for (Entrenador entrenadorIteracion : entrenadoresExampleList) {
-			if (club != null && club.equals(entrenadorIteracion.getClub())) {
-				listaEntrenadors.add(entrenadorIteracion);
-			}
-		}*/
 		Iterator<Entrenador> iteratorEntrenadors = entrenadorRepository.findAll().iterator();
 		while(iteratorEntrenadors.hasNext()) {
-			if (club != null && club.equals(iteratorEntrenadors.next().getClub())) {
-				listaEntrenadors.add(iteratorEntrenadors.next());
+			Entrenador actual = iteratorEntrenadors.next();
+			if (club != null && club.equals(actual.getClub())) {
+				listaEntrenadors.add(actual);
 			}
 
 		}
@@ -121,6 +117,12 @@ public class EntrenadorService {
 				inscripcionException.setContacto(Contacto.INSCRIPCION);
 				throw inscripcionException;
 				//continue; 
+			}
+			if(findEntrenadoresByClub(equipo.getNombre()).size()!=0){
+				InscripcionException inscripcionException = new InscripcionException(
+						"No se pudo agregar el entrenador, el club ya cuenta con un entrenador: "+equipo.getNombre());
+				inscripcionException.setContacto(Contacto.INSCRIPCION);
+				throw inscripcionException;
 			}
 			long sumaSalarios= Long.sum(equipo.getSalarioClub() , aGuardar.getSalario());
 			if ( sumaSalarios > equipo.getTopeSalarial() ) {
@@ -402,23 +404,7 @@ public class EntrenadorService {
 	
 	
 	
-	
-	public ArrayList<Entrenador> findEntrenadorByClub(String club) {
-		ArrayList<Entrenador> listaEntrenadors = new ArrayList<Entrenador>();
-		/*for (Entrenador entrenadorIteracion : entrenadoresExampleList) {
-			if (club != null && club.equals(entrenadorIteracion.getClub())) {
-				listaEntrenadors.add(entrenadorIteracion);
-			}
-		}*/
-		Iterator<Entrenador> iteratorEntrenadors = entrenadorRepository.findAll().iterator();
-		while(iteratorEntrenadors.hasNext()) {
-			if (club != null && club.equals(iteratorEntrenadors.next().getClub())) {
-				listaEntrenadors.add(iteratorEntrenadors.next());
-			}
 
-		}
-		return listaEntrenadors;
-	}
 	
 	public void saveBatch(List<Entrenador> entrenadores) throws InscripcionException {
 		for (Entrenador aGuardar : entrenadores) {
