@@ -6,7 +6,7 @@ Este README asume que se esta trabajando en localhost con puerto 8080, de no ser
 
 ## Instituciones aprobadas por la ONG
 
-## Cargar instituciones
+### Cargar instituciones
 
 Realizar un request de tipo POST a: localhost:8080/api/lp3/ong
 
@@ -18,7 +18,7 @@ direccion : direccion de la institucion (String)
 
 anhoFundacion : anho de fundacion de la institucion (int)
 
-## Ver las instituciones
+### Ver las instituciones
 
 Para ver todas las instituciones aprobadas por la ONG, realizar un request de tipo GET a:
 
@@ -346,3 +346,12 @@ nombreDelTorneo : nombre del torneo (String)
 participantes : lista de los equipos participantes (List/Array de String)
 
 
+##Primeros Pasos
+
+1. Cargar las organizaciones autorizadas por la ONG
+
+2. Cargar los equipos/clubes
+
+3. Cargar los jugadores (solo esta vez) mediate localhost:8080/api/lp3/jugadores/inicializar
+
+4. Ahora usted se encuentra listo para utilizar todos los REST Requests disponibles

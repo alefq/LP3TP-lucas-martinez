@@ -13,6 +13,7 @@ import py.edu.uca.lp3.constants.Contacto;
 import py.edu.uca.lp3.domain.Empleado;
 import py.edu.uca.lp3.domain.Entrenador;
 import py.edu.uca.lp3.domain.Equipo;
+import py.edu.uca.lp3.repository.EmpleadoRepository;
 import py.edu.uca.lp3.repository.EntrenadorRepository;
 import py.edu.uca.lp3.repository.EquipoRepository;
 import py.edu.uca.lp3exceptions.InscripcionException;
@@ -164,7 +165,7 @@ public class EntrenadorService {
      * 				boolean : true si el numero de cedula se encuentra disponible, false si no
      * */
 	public boolean numeroDeCedulaDisponible(int cedula) {
-		if(findByCedula(cedula) == null) {
+		if(findByCedulaEmp(cedula) == null) {
 			return true;
 		}
 		return false;
@@ -182,6 +183,27 @@ public class EntrenadorService {
 		Iterator<Entrenador> iteratorEntrenadors = entrenadorRepository.findAll().iterator();
 		while(iteratorEntrenadors.hasNext()) {
 			Entrenador actual = iteratorEntrenadors.next();
+			if (cedula== actual.getNumeroCedula()) {
+				return actual;
+			}
+		}
+		return null;
+	}
+	
+	@Resource
+	EmpleadoRepository empleadoRepository;
+	/*
+     * Funcion para obtener un empleado por numerio de cedula
+     * Parametros:
+     * 				int cedula : el numero de cedula del empleado que queremos
+     * Retorno:
+     * 				Empleado actual : el empleado que coincide con el numero de cedula
+     * 				null : si no se encontro ningun empleado con dicho numero de cedula
+     * */
+	public Empleado findByCedulaEmp(int cedula) {
+		Iterator<Empleado> iteratorEmpleados = empleadoRepository.findAll().iterator();
+		while(iteratorEmpleados.hasNext()) {
+			Empleado actual = iteratorEmpleados.next();
 			if (cedula== actual.getNumeroCedula()) {
 				return actual;
 			}

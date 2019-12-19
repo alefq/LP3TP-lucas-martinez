@@ -1,5 +1,7 @@
 package py.edu.uca.lp3.constants;
 
+//Clase estática que utilizamos para todas las constantes 
+//que utlilizaremos como los diferentes mails de atencion/contacto
 public class Contacto {
 	
 	public static final String INSCRIPCION = "lucas.inscripciones@gmail.com";

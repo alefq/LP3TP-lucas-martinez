@@ -1,7 +1,7 @@
 package py.edu.uca.lp3.constants;
 
 //Clase estática que utilizamos para centralizar todas las constantes 
-//que utlilizaremos como parte de la API REST para los ejercicios
+//que utlilizaremos como parte de la API REST
 public class ApiPaths {
 
 	private static final String BASE_API = "/api/lp3";
