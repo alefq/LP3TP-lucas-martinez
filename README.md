@@ -346,7 +346,7 @@ nombreDelTorneo : nombre del torneo (String)
 participantes : lista de los equipos participantes (List/Array de String)
 
 
-##Primeros Pasos
+## Primeros Pasos
 
 1. Cargar las organizaciones autorizadas por la ONG
 
