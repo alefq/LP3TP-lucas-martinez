@@ -79,6 +79,24 @@ nombre : nombre del club (String)
 
 calificaParaInternacional : 1 si califica para torneos internacionales, 0 si no (bool)
 
+Para modificar información general del equipo como en donde se invertirán sus impuestos de tecnología y demás, realizar un request de tipo PUT a:
+
+localhost:8080/api/lp3/equipos
+
+con una lista en formato JSON con los siguientes parámetros para cada elemento:
+
+nombre : nombre del club (String)
+
+viajes : viajes que se realizaran con el impuesto de promocion (String)
+
+teconologias : tecnologias en las que se invertira el impuesto de tecnologia (String)
+
+ong : instituciones ong a quienes se ayudarancon el impuesto de lujo (Lista/Array de String)
+
+elEquipoPagoImpuestoLujo : 1 si pago el impuesto de lujo, 0 si no (bool)
+
+calificaParaInternacional : 1 si califica para torneos internacionales, 0 si no (bool)
+
 
 ## Empleados
 
@@ -347,6 +365,8 @@ participantes : lista de los equipos participantes (List/Array de String)
 
 
 ## Primeros Pasos
+
+Antes que nada, en el archivo application.properties editar donde dice spring.datasource.url=jdbc\:h2\: y agregar un path valido para su computadora (spring.datasource.url=jdbc\:h2\:<PATH_VALIDO>) luego:
 
 1. Cargar las organizaciones autorizadas por la ONG
 
